@@ -1,0 +1,81 @@
+qlib_init:
+  provider_uri: data/qlib_bin/sample
+  region: us
+
+experiment:
+  name: baseline_lightgbm_alpha158
+  artifact_dir: artifacts/experiments/baseline_lightgbm_alpha158
+  seed: 42
+  universe: sample
+  benchmark: SPY
+  transaction_cost:
+    open_cost: 0.0005
+    close_cost: 0.0015
+    min_cost: 5.0
+
+task:
+  model:
+    class: LGBModel
+    module_path: qlib.contrib.model.gbdt
+    kwargs:
+      loss: mse
+      colsample_bytree: 0.8879
+      learning_rate: 0.0421
+      subsample: 0.8789
+      lambda_l1: 205.6999
+      lambda_l2: 580.9768
+      max_depth: 8
+      num_leaves: 210
+      num_threads: 4
+  dataset:
+    class: DatasetH
+    module_path: qlib.data.dataset
+    kwargs:
+      handler:
+        class: Alpha158
+        module_path: qlib.contrib.data.handler
+        kwargs:
+          start_time: "2024-01-02"
+          end_time: "2024-12-31"
+          fit_start_time: "2024-01-02"
+          fit_end_time: "2024-06-30"
+          instruments: sample
+      segments:
+        train:
+          - "2024-01-02"
+          - "2024-06-30"
+        valid:
+          - "2024-07-01"
+          - "2024-09-30"
+        test:
+          - "2024-10-01"
+          - "2024-12-31"
+  record:
+    - class: SignalRecord
+      module_path: qlib.workflow.record_temp
+      kwargs: {}
+    - class: SigAnaRecord
+      module_path: qlib.workflow.record_temp
+      kwargs: {}
+    - class: PortAnaRecord
+      module_path: qlib.workflow.record_temp
+      kwargs:
+        config:
+          strategy:
+            class: TopkDropoutStrategy
+            module_path: qlib.contrib.strategy
+            kwargs:
+              signal: "<PRED>"
+              topk: 50
+              n_drop: 5
+          backtest:
+            start_time: "2024-10-01"
+            end_time: "2024-12-31"
+            account: 100000000
+            benchmark: SPY
+            exchange_kwargs:
+              limit_threshold: 0.095
+              deal_price: close
+              open_cost: 0.0005
+              close_cost: 0.0015
+              min_cost: 5.0

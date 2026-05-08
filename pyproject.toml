@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quant-alpha-factory"
+version = "0.1.0"
+description = "Production-style quant research platform scaffold for Qlib and RD-Agent workflows."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Rishabh Patil" }]
+dependencies = [
+  "pandas>=2.1",
+  "pydantic>=2.6",
+  "pyyaml>=6.0",
+  "typer>=0.12",
+]
+
+[project.scripts]
+qaf = "src.cli:app"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5",
+]
+qlib = [
+  "pyqlib>=0.9.6",
+]
+rdagent = [
+  "rdagent",
+]
+api = [
+  "fastapi>=0.110",
+  "uvicorn>=0.27",
+]
+dashboard = [
+  "streamlit>=1.32",
+]
+real = [
+  "pyqlib>=0.9.6",
+  "rdagent",
+]
+
+[tool.setuptools]
+packages = [
+  "api",
+  "dashboard",
+  "src",
+  "src.data",
+  "src.demo",
+  "src.integrations",
+  "src.qlib_integration",
+  "src.rd_agent_adapter",
+  "src.factors",
+  "src.strategies",
+  "src.backtest",
+  "src.experiments",
+  "src.validation",
+  "src.reporting",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

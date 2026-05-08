@@ -1,0 +1,37 @@
+.DS_Store
+.env
+
+# Local agent operating files; useful during development, not part of the public repo.
+AGENTS.md
+agents.md
+prompts.md
+prompts-readme.md
+
+.venv/
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+dist/
+build/
+mlruns/
+selector.log
+
+# Local and generated research artifacts.
+artifacts/experiments/*
+artifacts/reports/*
+artifacts/logs/*
+data/raw/*
+data/processed/*
+data/qlib_bin/*
+
+!artifacts/experiments/.gitkeep
+!artifacts/reports/.gitkeep
+!artifacts/logs/.gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/qlib_bin/.gitkeep

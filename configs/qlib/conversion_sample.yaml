@@ -1,0 +1,11 @@
+input_path: data/sample/prices.csv
+output_dir: data/qlib_bin/sample
+freq: day
+include_fields:
+  - open
+  - high
+  - low
+  - close
+  - volume
+  - adjusted_close
+

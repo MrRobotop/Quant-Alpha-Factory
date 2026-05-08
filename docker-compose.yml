@@ -1,0 +1,31 @@
+services:
+  quant-alpha-factory:
+    build: .
+    image: quant-alpha-factory:local
+    working_dir: /app
+    command: python -m src.cli --help
+    environment:
+      QAF_ARTIFACT_DIR: /app/artifacts
+      QAF_QLIB_PROVIDER_URI: /app/data/qlib_bin/sample
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./data:/app/data
+
+  api:
+    build: .
+    image: quant-alpha-factory:local
+    command: python -m uvicorn api.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./artifacts:/app/artifacts
+
+  dashboard:
+    build: .
+    image: quant-alpha-factory:local
+    command: python -m streamlit run dashboard/app.py --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./artifacts:/app/artifacts
+
